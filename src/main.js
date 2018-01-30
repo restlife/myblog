@@ -3,16 +3,28 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
 import '@/assets/bootstrap.css'
 import '@/assets/jquery.js'
 import '@/assets/bootstrap.js'
 
 Vue.config.productionTip = false
-
+const store = new Vuex.Store({
+  state: {
+    nickName:''
+  },
+  mutations: {
+    //更新用户信息
+    updateUserInfo(state, nickName) {
+       state.nickName = nickName;
+    }
+  }
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
