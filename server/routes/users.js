@@ -14,6 +14,32 @@ mongoose.connection.on("connected", function () {
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+router.post("/checklogin", function (req,res,next) {
+  if(req.cookies.userName){
+    res.json({
+      status:'0',
+      msg:'',
+      result:req.cookies.userName || ''
+    });
+  }else{
+    res.json({
+      status:'1',
+      msg:'未登录',
+      result:''
+    });
+  }
+});
+router.post("/logout",function(req,res,next){
+  res.cookie("userName", "", {
+    path: '/',
+    maxAge: -1
+  });
+  res.json({
+    status:"0",
+    msg:'',
+    result:''
+  })
+})
 router.post("/login", function (req,res,next) {
   var param = {
     userName: req.body.userName,
@@ -21,17 +47,13 @@ router.post("/login", function (req,res,next) {
   }
   User.findOne(param, function (err,doc) {
     if (err) {
-      console.log(3);
       res.json({
         status: "1",
         msg: err.message
       });
     } else {
       if (doc) {
-        res.cookie("uid", doc.uid, {
-          path: '/',
-          maxAge: 1000 * 60 * 60
-        });
+
         res.cookie("userName", doc.userName, {
           path: '/',
           maxAge: 1000 * 60 * 60

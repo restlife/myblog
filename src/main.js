@@ -4,11 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from 'vuex'
-import '@/assets/bootstrap.css'
-import '@/assets/jquery.js'
-import '@/assets/bootstrap.js'
 
-Vue.config.productionTip = false
+
+
+Vue.use(Vuex);
+
+Vue.config.productionTip = false;
 const store = new Vuex.Store({
   state: {
     nickName:''

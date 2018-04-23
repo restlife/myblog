@@ -26,6 +26,12 @@ module.exports = {
       },
       '/users/login':{
         target:'http://127.0.0.1:3000'
+      },
+      '/users/checklogin':{
+        target:'http://127.0.0.1:3000'
+      },
+      '/users/logout':{
+        target:'http://127.0.0.1:3000'
       }
     },
     // Use Eslint Loader?

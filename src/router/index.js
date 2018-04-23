@@ -6,6 +6,7 @@ import MyLife from '@/components/MyLife'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -13,7 +14,7 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path:'/my',
+      path:'/my/:id',
       name:'myLife',
       component:MyLife
     }

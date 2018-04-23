@@ -1,7 +1,8 @@
 <template>
   <div id="app">
+
     <v-header></v-header>
-    <img src="./assets/logo.png">
+
     <router-view/>
   </div>
 </template>
@@ -14,6 +15,7 @@ export default {
     'v-header': header
   }
 }
+
 </script>
 
 <style>

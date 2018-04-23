@@ -29,15 +29,19 @@
         </div>
       </div>
     </nav>
-    <input type="text" class="username" v-model="userName">
-    <input type="password" class="pwd" v-model="userPwd">
-    <button @click="login">登录</button>
-
+    <input type="text" v-show="!errorTip" class="username" v-model="userName">
+    <input type="password" v-show="!errorTip"  class="pwd" v-model="userPwd">
+    <button v-show="!errorTip"  @click="login">登录</button>
+    <button v-show="errorTip"  @click="logOut">退出</button>
+    <span v-text="nickName"></span>
+    <a href="/my">123123</a>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
   import axios from 'axios'
+  import { mapState } from 'vuex'
+
   export default{
     data(){
       return {
@@ -46,10 +50,28 @@
         errorTip: false
       }
     },
+    computed:{
+      ...mapState(['nickName'])
+    },
+    mounted(){
+      this.checkLogin();
+    },
     methods:{
+      checkLogin(){
+        axios.post("/users/checklogin").then((response)=>{
+          var res = response.data;
+          var path = this.$route.pathname;
+          if(res.status=="0"){
+//                      this.nickName = res.result;
+            this.errorTip = true;
+            this.$store.commit("updateUserInfo",res.result.userName);
+            this.loginModalFlag = false;
+          }
+        });
+      },
       login(){
         if(!this.userName || !this.userPwd){
-          this.errorTip = true;
+          this.errorTip = false;
           return;
         }
         axios.post("/users/login",{
@@ -58,7 +80,8 @@
         }).then((response)=>{
           let res = response.data;
           if(res.status=="0"){
-            this.errorTip = false;
+
+            this.errorTip = true;
             this.loginModalFlag = false;
             this.$store.commit("updateUserInfo",res.result.userName);
             this.getCartCount();
@@ -70,8 +93,10 @@
       logOut(){
           axios.post("/users/logout").then((response)=>{
               let res = response.data;
+            console.log(res);
               if(res.status=="0"){
-                  this.$store.commit("updateUserInfo",res.result.userName);
+                this.errorTip = false;
+                  this.$store.commit("updateUserInfo",res.result);
               }
           })
       }
